@@ -1,0 +1,14 @@
+
+welcome: "Welcome to Calculator! Enter your name:"
+valid_name: "Make sure to use a valid name."
+
+first_num: "Input first number :"
+not_valid: "Hmm...that doesn't look like a valid number"
+second_num: "Input second number :"
+  #prompt("Hmm...that doesn't look like a valid number")
+
+invalid_choice: "Must choose 1, 2, 3 or 4"
+#pre_answer: "#{operation_to_message(operator)} the two numbers...")
+#answer: "The answer is #{answer}"
+again: "Do you want to perform another calculation? (Y to calculate again)"
+goodbye: "Thank you for using calculator. Good bye!"
