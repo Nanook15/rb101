@@ -7,7 +7,7 @@ end
 
 
 
-my_string = "pumpkins"
+my_string = "pumpkins"a
 my_array = ["pumpkins"]
 tricky_method(my_string, my_array)
 
