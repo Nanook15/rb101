@@ -10,30 +10,34 @@ NUMBER_WORDS = %w(zero one two three four five six seven eight
   sixteen seventeen eighteen nineteen
   )
 
-def alphabetic_number_sort(range)
-  hash = {}
-  result = []
-  counter = 0
+# def alphabetic_number_sort(range)
+#   hash = {}
+#   result = []
+#   counter = 0
 
-  # range.each_with_object(NUMBER_WORDS) do | num, words |
-  #   hash[words[counter]] = num
-  #   counter += 1
-  # end
-  
-  range.each do | num |
-    hash[NUMBER_WORDS[counter]] = num
-    counter += 1
-  end
+#   range.each do | num |
+#     hash[NUMBER_WORDS[counter]] = num
+#     counter += 1
+#   end
 
-  hash.sort.each do | _, v |
-    result << v
-  end
+#   hash.sort.each do | _, v |
+#     result << v
+#   end
 
-  result
+#   result
+
+# end
+
+# Launch School Solution
+def alphabetic_number_sort(numbers)
+  numbers.sort_by { |number| NUMBER_WORDS[number] }
+
+
 
 end
 
-p alphabetic_number_sort((0..19).to_a) == [
-  8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
-   6, 16, 10, 13, 3, 12, 2, 0
- ]
+
+p alphabetic_number_sort((0..19).to_a) #== [
+#   8, 18, 11, 15, 5, 4, 14, 9, 19, 1, 7, 17,
+#    6, 16, 10, 13, 3, 12, 2, 0
+#  ]
