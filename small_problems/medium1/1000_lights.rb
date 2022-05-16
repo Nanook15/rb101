@@ -43,4 +43,4 @@ end
 
 
 
-p switches(10)
+p switches(1000)
