@@ -1,0 +1,41 @@
+# find and amend the error
+
+
+def decrease(counter)
+  counter -= 1
+end
+
+counter = 10
+
+10.times do
+  puts counter
+  decrease(counter)
+end
+
+puts 'LAUNCH!'
+
+# Solution
+
+def decrease(counter)
+  counter - 1
+end
+
+counter = 10
+
+10.times do
+  puts counter
+  counter = decrease(counter)
+end
+
+puts 'LAUNCH!'
+
+# Refactored
+
+counter = 10
+
+counter.times do
+  puts counter
+  counter -= 1
+end
+
+puts 'LAUNCH!'
