@@ -1,0 +1,39 @@
+PEDAC
+
+1. Initialize deck
+
+2. Deal cards to player and dealer
+
+(c) Tell player what cards they have
+(d) Tell player what one of the cards the dealer has
+
+player_cards = []
+deck.keys.each do |suit|
+  cards = deck[suit]
+  cards.shuffle!
+  player_cards << cards.pop
+end
+
+3. Player turn: hit or stay - repeat until 'bust' or 'stay'
+
+(a) Tell player what cards he has and what cards the computer has
+(b) Ask player to choose hit or stay
+(c) If stay turn ends and go to computer
+(d) If hit choose random card from remaining cards
+(e) Calculate player card totals
+(f) If less than 21 repeat loop - hit or stay
+(g) If greater than 21 break loop and game ends and player lose message
+
+4. Dealer turn: hit or stay - repeat until total >= 17
+
+(a) Show dealers cards and their total value
+(b) Test dealer cards total
+- If > 21 break and player wins
+- If >= 17 break and assess overall score
+- If < 17 hit
+(c) Repeat loop
+
+6. If dealer bust player wins
+
+7. Compare cards and declare winner
+

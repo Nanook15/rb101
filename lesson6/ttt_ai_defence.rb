@@ -1,3 +1,5 @@
+require 'pry'
+
 # set winning lines
 WINNING_LINES =   [[1, 2, 3], [4, 5, 6], [7, 8, 9]] +  # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] +  # cols
@@ -62,9 +64,16 @@ def player_places_piece!(brd)
 end
 
 # computer chooses piece from remaining empty squares
+# assigns computer marker using defence algo or random
 def computer_places_piece(brd)
-  square = empty_squares(brd).sample
-  brd[square] = COMPUTER_MARKER
+  square = ''
+  
+  if defense_ai(brd) != nil
+    brd[defense_ai(brd)] = COMPUTER_MARKER
+  else
+    square = empty_squares(brd).sample
+    brd[square] = COMPUTER_MARKER
+  end
 end
 
 # checks if board full
@@ -90,7 +99,7 @@ def detect_winner(brd)
   nil
 end
 
-# presents remaining number to user with better formatting
+# presents available board moves to user with better formatting
 def joinor(remaining_num, arg1=', ', arg2='or')
     case 
     when remaining_num.size == 1
@@ -102,43 +111,90 @@ def joinor(remaining_num, arg1=', ', arg2='or')
     end
 end
 
-# def score
+# updates score board
+def update_score(board, win_count)
+  if detect_winner(board) == 'Player'
+    win_count[:player] = win_count[:player] + 1
+  elsif detect_winner(board) == 'Computer'
+    win_count[:computer] = win_count[:computer] + 1
+  end
+end
 
+# delivers message at end of game before replay option
+def win_message(win_count)
+  case
+  when win_count[:player] == 5
+    prompt "*****FINAL SCORE*****".center(30)
+    prompt "**Player:#{win_count[:player]}**Computer:#{win_count[:computer]}**".center(30)
+    prompt "*****Player is Winner!*****".center(30)
+  when win_count[:computer] == 5
+    prompt "*****FINAL SCORE*****".center(30)
+    prompt "**Player:#{win_count[:player]}**Computer:#{win_count[:computer]}**".center(30)
+    prompt "*****Computer is Winner!*****".center(30)
+  end
+end
 
-# end
+# ai defense board: checks winnings lines for 2 player markers and
+# one empty marker. returns empty board space or empty array
+def defense_ai(brd)
+  square = []
 
-# main programme loop - initializes loop
+  WINNING_LINES.each do |line|
+    if brd.values_at(*line).count(PLAYER_MARKER) == 2 &&
+      brd.values_at(*line).count(INITIAL_MARKER) == 1
+      square = line.select {|key| brd[key] == ' '}
+    elsif brd.values_at(*line).count(COMPUTER_MARKER) == 2 &&
+      brd.values_at(*line).count(INITIAL_MARKER) == 1
+      square = line.select {|key| brd[key] == ' '}
+    end
+  end
+  square[0]
+end
+
+#outer loop initliases/resets win_count
 loop do
-  board = initialize_board
+  win_count = { :player => 0, :computer => 0 }
 
-# inner programme loop - 
-# board displayed & player & computer choose piece
-# loop checks after each piece placed & breaks if winner or board full
+  # game loop - initializes loop/resets board for each round of the game
   loop do
+    board = initialize_board
+
+  # inner programme loop - 
+  # board displayed & player & computer choose piece
+  # loop checks after each piece placed & breaks if winner or board full
+    loop do
+      display_board(board)
+
+      player_places_piece!(board)
+      break if someone_won?(board) || board_full?(board)
+
+      computer_places_piece(board)
+      break if someone_won?(board) || board_full?(board)
+    end
+    # inner game loop ends
+    
+    # board displayed, showing winner or full board
     display_board(board)
 
-    player_places_piece!(board)
-    break if someone_won?(board) || board_full?(board)
+    # displays the outcome - winner or tie
+    if someone_won?(board)
+      prompt "#{detect_winner(board)} won!"
+      sleep 3
+      update_score(board, win_count)
+    else
+      prompt "It's a tie!"
+    end
 
-    computer_places_piece(board)
-    break if someone_won?(board) || board_full?(board)
-  end
-  # inner game loop ends
-  
-  # board displayed, showing winner or full board
-  display_board(board)
-
-  # displays the outcome - winner or tie
-  if someone_won?(board)
-    prompt "#{detect_winner(board)} won!"
-  else
-    prompt "It's a tie!"
+    break if win_count[:player] == 5 ||
+             win_count[:computer] == 5
   end
 
-  # play again prompt
-  prompt 'Play again? (y or n)'
-  answer = gets.chomp
-  break unless answer.downcase.start_with?('y')
+win_message(win_count)
+
+# play again prompt
+prompt 'Play again? (y or n)'
+answer = gets.chomp
+break unless answer.downcase.start_with?('y')
 end
 
 # game loop ends and exit message
